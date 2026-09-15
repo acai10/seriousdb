@@ -7,7 +7,7 @@ The project uses `pytest` for automated testing and FastAPI's `TestClient` for A
 Run the full test suite with:
 
 ```bash
-pytest
+uv run pytest
 ```
 
 The test suite covers:
@@ -17,4 +17,6 @@ The test suite covers:
 - CRUD operations
 - Concurrent database access
 
-Each test uses an isolated temporary database so the test suite does not modify the local `.sdb` database.
+The tests are plain pytest functions. Setup and cleanup happen in fixtures, using the
+built-in `tmp_path` and `monkeypatch` fixtures, so each test uses an isolated temporary
+database and the test suite does not modify the local `.sdb` database.
