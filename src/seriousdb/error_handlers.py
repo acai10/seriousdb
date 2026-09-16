@@ -78,7 +78,7 @@ async def handle_unexpected_error(request: Request, exc: Exception) -> JSONRespo
 
 def register_exception_handlers(app: FastAPI) -> None:
     """Register the centralized handlers on a FastAPI application."""
-    app.add_exception_handler(ApplicationError, handle_application_error)
-    app.add_exception_handler(StarletteHTTPException, handle_http_exception)
-    app.add_exception_handler(RequestValidationError, handle_request_validation_error)
+    app.exception_handler(ApplicationError)(handle_application_error)
+    app.exception_handler(StarletteHTTPException)(handle_http_exception)
+    app.exception_handler(RequestValidationError)(handle_request_validation_error)
     app.add_exception_handler(Exception, handle_unexpected_error)

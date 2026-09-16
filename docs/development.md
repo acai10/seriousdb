@@ -92,6 +92,11 @@ Lint python files with `ruff`:
 uv run ruff check .
 ```
 
+Type checking with `ty`:
+```bash
+uv run ty check .
+```
+
 ### Nix in Nix develop
 
 ```bash
