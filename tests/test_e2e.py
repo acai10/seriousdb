@@ -1,7 +1,7 @@
-"""End-to-end sanity checks for the documented HTTP API (see docs/api.md, docs/persistence.md).
+"""End-to-end sanity checks for the documented HTTP API.
 
-Uses pytest and FastAPI's TestClient, both already available via the project's
-existing dependencies (no extra packages required).
+Every test mirrors a statement from ``docs/api.md`` or ``docs/persistence.md``
+and drives the app through FastAPI's ``TestClient``.
 """
 
 import json
