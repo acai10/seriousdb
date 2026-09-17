@@ -24,18 +24,6 @@ def client(tmp_path, monkeypatch):
     with TestClient(main.app) as test_client:
         yield test_client
 
-    def test_bulk_returns_requested_keys(self):
-        self.client.put("/db", params={"key": "name", "value": "Daniel"})
-        self.client.put("/db", params={"key": "language", "value": "Python"})
-
-        response = self.client.get(
-            "/db/bulk",
-            params=[("key", "name"), ("key", "language")],
-        )
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"name": "Daniel", "language": "Python"})
-
 
 def test_fresh_database_is_empty(client):
     # docs/persistence.md: a new database file is seeded with {}
@@ -118,3 +106,13 @@ def test_count_returns_number_of_key_value_pairs(client):
 
     assert response.status_code == 200
     assert response.json() == 2
+
+
+def test_bulk_returns_requested_keys(client):
+    client.put("/db", params={"key": "name", "value": "Daniel"})
+    client.put("/db", params={"key": "language", "value": "Python"})
+
+    response = client.get("/db/bulk", params=[("key", "name"), ("key", "language")])
+
+    assert response.status_code == 200
+    assert response.json() == {"name": "Daniel", "language": "Python"}
