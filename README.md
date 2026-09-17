@@ -1,6 +1,9 @@
-# seriousdb - An HTTP-based Key-Value Store
+![seriousdb logo](https://i.imgur.com/ztPW7ZI.png)
 
-`seriousdb` is a small HTTP-based key-value store written in Python using [FastAPI](https://fastapi.tiangolo.com/).
+# seriousdb - A seriously simple database
+
+`seriousdb` is a small, simple key-value database you can query directly over HTTP. It requires zero configuration and is designed to be effortless.
+For fullstack projects, `seriousdb` can replace your complete backend.
 
 For setup, usage, architecture, persistence, and contribution guidance, see the [documentation](docs/).
 

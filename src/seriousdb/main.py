@@ -140,6 +140,31 @@ def get_all(cache: Annotated[Cache, Depends(get_cache)]) -> dict[str, str]:
 
 
 @app.get(
+    "/db/bulk",
+    summary="Get multiple key-value pairs",
+    description=cleandoc(
+        """
+        Returns the values stored in the database under multiple requested keys.
+
+        Keys that do not exist are omitted from the response.
+        The response contains a key-value pair for each requested key that exists in the database.
+        """
+    ),
+    response_description="The requested key-value pairs.",
+    responses={
+        422: {"description": "No key parameter was provided."},
+        503: {"description": "The database file could not be opened and loaded."},
+    },
+)
+def get_bulk(
+    key: Annotated[list[str], Query()], cache: Annotated[Cache, Depends(get_cache)]
+) -> dict[str, str]:
+    with cache.lock:
+        db = require_db(cache)
+        return {k: db[k] for k in key if k in db}
+
+
+@app.get(
     "/db/count",
     summary="Count the stored keys",
     description=cleandoc(
@@ -152,9 +177,9 @@ def get_all(cache: Annotated[Cache, Depends(get_cache)]) -> dict[str, str]:
         503: {"description": "The database file could not be opened and loaded."}
     },
 )
-def count(cache: Annotated[Cache, Depends(get_cache)]):
+def count(cache: Annotated[Cache, Depends(get_cache)]) -> int:
     with cache.lock:
-        return len(require_db(cache).copy())
+        return len(require_db(cache))
 
 
 @app.delete(
