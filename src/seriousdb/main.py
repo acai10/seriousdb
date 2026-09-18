@@ -1,4 +1,3 @@
-import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from inspect import cleandoc
@@ -14,8 +13,10 @@ from fastapi import (
     status,
 )
 
+from seriousdb.logging_config import configure_logging
+
 from .cache import Cache, require_db
-from .config import DB_FILE, LOG_LEVEL
+from .config import DB_FILE
 from .error_handlers import register_exception_handlers
 
 cache = Cache()
@@ -23,7 +24,7 @@ cache = Cache()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    logging.basicConfig(level=LOG_LEVEL.upper())
+    configure_logging()
     cache.load(DB_FILE)
     yield
 

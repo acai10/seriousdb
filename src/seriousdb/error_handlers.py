@@ -10,6 +10,7 @@ errors are reported to the client as a generic ``500`` response so that no
 internal detail leaks out.
 """
 
+import logging
 from http import HTTPStatus
 
 from fastapi import FastAPI, Request
@@ -20,6 +21,8 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from .exceptions import ApplicationError
 
 INTERNAL_ERROR_DETAIL = "An internal server error occurred"
+
+logger = logging.getLogger(__name__)
 
 
 def error_response(
@@ -147,6 +150,7 @@ async def handle_unexpected_error(request: Request, exc: Exception) -> JSONRespo
     JSONResponse
         ``500`` response with error code ``internal_server_error``.
     """
+    logger.exception("Unexpected application error")
     return error_response(
         HTTPStatus.INTERNAL_SERVER_ERROR,
         INTERNAL_ERROR_DETAIL,
